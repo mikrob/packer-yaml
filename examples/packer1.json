@@ -1,0 +1,33 @@
+{
+  "variables": {
+    "aws_access_key": "AWS_ACCESS_KEY",
+    "aws_secret_key": "AWS_SECRET_KEY",
+    "consul_url" : "https://releases.hashicorp.com/consul/0.6.3/consul_0.6.3_linux_amd64.zip"
+  },
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "access_key": "{{user `aws_access_key`}}",
+      "secret_key": "{{user `aws_secret_key`}}"
+    },
+    {
+      "type": "googlecompute",
+      "account_file": "gce.json",
+      "project_id": "mikrob"
+    }
+  ],
+  "provisioners": [
+    {
+      "type" : "shell",
+      "inline" : [
+        "#!/bin/bash",
+        "sudo useradd -m deploy",
+        "sudo mkdir -p /home/deploy/.ssh/",
+        "sudo chown -R deploy /home/deploy",
+        "sudo chown -R deploy /home/deploy/.ssh",
+        "sudo mkdir -p /root/.ssh/",
+        "sudo apt-get -y install ssh"
+      ]
+    }
+  ]
+}
