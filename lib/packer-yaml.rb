@@ -1,5 +1,11 @@
+require 'yaml'
+
 class PackerYaml
-  def self.read
-    puts "Hi all!"
+  def self.read file_path
+    YAML.load_file(file_path)
+  end
+
+  def self.to_json yaml
+
   end
 end
