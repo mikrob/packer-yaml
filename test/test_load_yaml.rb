@@ -8,8 +8,9 @@ class TestLoadYaml < Test::Unit::TestCase
 
     def test_load_yaml
       yaml = PackerYaml.read("#{CONFIG_PATH}/packer1.yaml")
-      pp yaml
-      p yaml[:provisioners].first[:inline].first
+      assert_equal "googlecompute", yaml[:builders][1][:type]
+      assert_equal "amazon-ebs", yaml[:builders][0][:type]
       assert_equal "#!/bin/bash", yaml[:provisioners].first[:inline].first
+      assert_equal "sudo apt-get -y install ssh", yaml[:provisioners].first[:inline][6]
     end
 end
