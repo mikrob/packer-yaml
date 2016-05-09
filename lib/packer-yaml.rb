@@ -1,5 +1,5 @@
 class PackerYaml
-  def self.hi
+  def self.read
     puts "Hi all!"
   end
 end
