@@ -1,4 +1,5 @@
 require "packer/yaml/version"
+require "packer/yaml/cli"
 require 'yaml'
 require 'json'
 require 'pp'

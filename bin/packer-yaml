@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+
+require "packer/yaml"
+require 'rubygems'
+
+#Packer::Yaml.new("pipo", "pipo.yml")
+Packer::Cli.start(ARGV)
+
