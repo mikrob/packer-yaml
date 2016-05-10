@@ -16,8 +16,15 @@ class TestLoadYaml < Test::Unit::TestCase
 
     def test_yaml_and_json_are_equal
       yaml = PackerYaml.read("#{CONFIG_PATH}/packer1.yaml")
-      json = JSON.parse(File.read("#{CONFIG_PATH}/packer1.json")) #, {:symbolize_names => true})
-
+      json = JSON.parse(File.read("#{CONFIG_PATH}/packer1.json"))
       assert_equal yaml, json
+    end
+
+    def test_to_json
+      packer_yaml = PackerYaml.new("example1", "#{CONFIG_PATH}/packer1.yaml")
+      json_generated = packer_yaml.to_json
+      parsed_json_generated = JSON.parse(json_generated)
+      json_real = JSON.parse(File.read("#{CONFIG_PATH}/packer1.json"))
+      assert_equal json_real, parsed_json_generated
     end
 end

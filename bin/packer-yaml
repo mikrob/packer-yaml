@@ -1,0 +1,42 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'commander/import'
+
+program :name, 'packer-yaml'
+program :version, '0.0.1'
+program :description, 'a tool to use yaml instead of json for packer'
+
+command :make_json do |c|
+  c.syntax = 'packer-yaml make_json [options]'
+  c.summary = ''
+  c.description = ''
+  c.example 'description', 'command example'
+  c.option '--some-switch', 'Some switch that does something'
+  c.action do |args, options|
+    # Do something or c.when_called Packer-yaml::Commands::Make_json
+  end
+end
+
+command :validate do |c|
+  c.syntax = 'packer-yaml validate [options]'
+  c.summary = ''
+  c.description = ''
+  c.example 'description', 'command example'
+  c.option '--some-switch', 'Some switch that does something'
+  c.action do |args, options|
+    # Do something or c.when_called Packer-yaml::Commands::Validate
+  end
+end
+
+command :run_packer do |c|
+  c.syntax = 'packer-yaml run_packer [options]'
+  c.summary = ''
+  c.description = ''
+  c.example 'description', 'command example'
+  c.option '--some-switch', 'Some switch that does something'
+  c.action do |args, options|
+    # Do something or c.when_called Packer-yaml::Commands::Run_packer
+  end
+end
+

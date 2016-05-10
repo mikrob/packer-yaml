@@ -7,8 +7,9 @@ Gem::Specification.new do |s|
   s.authors     = ["Mikael Robert"]
   s.email       = 'mikaelrob@gmail.com'
   s.files       = ["lib/packer-yaml.rb"]
+  s.executables   = ["packer-yaml"]
   s.add_runtime_dependency "test-unit", ["= 1.2.3"]
-  s.add_development_dependency "bourne", [">= 0"]
+  s.add_development_dependency "commander", ["= 4.4.0"]
   s.homepage    =
     'http://www.botsunit.com'
   s.license       = 'MIT'

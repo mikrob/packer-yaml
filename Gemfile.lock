@@ -1,6 +1,9 @@
 GEM
   remote: http://rubygems.org/
   specs:
+    commander (4.4.0)
+      highline (~> 1.7.2)
+    highline (1.7.8)
     power_assert (0.2.2)
     test-unit (3.0.8)
       power_assert
@@ -9,6 +12,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  commander
   test-unit
 
 BUNDLED WITH
