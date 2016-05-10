@@ -1,12 +1,41 @@
-# packer-yaml
+# Packer::Yaml
 
-This gem allow you to make your packer file in yaml.
-Yaml is better than json for packer because :
+Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/packer/yaml`. To experiment with that code, run `bin/console` for an interactive prompt.
 
-* Yaml allow comment (json doesn't)
-* Yaml allow include and avoid copy/paste if you have several packer builder which differences
+TODO: Delete this and the text above, and describe your gem
 
-In my case i had a few differences between docker, aws, openstack and gce so i finished with a lot of packer files which is hard to maintain.
-Moreover, when you use things like GCE Instances Group you should have an image per kind of VMs. So many and many packer json files to maintain with a lot of code duplication.
+## Installation
 
-Packer Yaml allow you to avoid this boring code duplication due to JSON format.
+Add this line to your application's Gemfile:
+
+```ruby
+gem 'packer-yaml'
+```
+
+And then execute:
+
+    $ bundle
+
+Or install it yourself as:
+
+    $ gem install packer-yaml
+
+## Usage
+
+TODO: Write usage instructions here
+
+## Development
+
+After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+
+To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+
+## Contributing
+
+Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/packer-yaml. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+
+
+## License
+
+The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+

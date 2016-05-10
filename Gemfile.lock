@@ -1,19 +1,26 @@
+PATH
+  remote: .
+  specs:
+    packer-yaml (0.1.0)
+      commander (= 4.4.0)
+
 GEM
-  remote: http://rubygems.org/
+  remote: https://rubygems.org/
   specs:
     commander (4.4.0)
       highline (~> 1.7.2)
     highline (1.7.8)
-    power_assert (0.2.2)
-    test-unit (3.0.8)
-      power_assert
+    minitest (5.4.3)
+    rake (10.4.2)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  commander
-  test-unit
+  bundler (~> 1.12)
+  minitest (~> 5.0)
+  packer-yaml!
+  rake (~> 10.0)
 
 BUNDLED WITH
    1.12.3

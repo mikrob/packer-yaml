@@ -1,16 +1,35 @@
-Gem::Specification.new do |s|
-  s.name        = 'packer-yaml'
-  s.version     = '0.0.1'
-  s.date        = '2016-05-09'
-  s.summary     = "Gem to make packer file in yaml"
-  s.description = "Gem to make packer file in yaml, allowing to use include and comments that are not possible in json"
-  s.authors     = ["Mikael Robert"]
-  s.email       = 'mikaelrob@gmail.com'
-  s.files       = ["lib/packer-yaml.rb"]
-  s.executables   = ["packer-yaml"]
-  s.add_runtime_dependency "test-unit", ["= 1.2.3"]
-  s.add_development_dependency "commander", ["= 4.4.0"]
-  s.homepage    =
-    'http://www.botsunit.com'
-  s.license       = 'MIT'
+# coding: utf-8
+lib = File.expand_path('../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+require 'packer/yaml/version'
+
+Gem::Specification.new do |spec|
+  spec.name          = "packer-yaml"
+  spec.version       = Packer::Yaml::VERSION
+  spec.authors       = ["mikrob"]
+  spec.email         = ["mikael.robert@botsunit.com"]
+
+  spec.summary       = %q{Gem to make packer file in yaml.}
+  spec.description   = %q{Gem to make packer file in yaml, allowing to use include and comments that are not possible in json.}
+  spec.homepage      = "http://github.com/mikrob/packer-yaml"
+  spec.license       = "MIT"
+
+  # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
+  # to allow pushing to a single host or delete this section to allow pushing to any host.
+  if spec.respond_to?(:metadata)
+    spec.metadata['allowed_push_host'] = "TODO: Set to 'http://mygemserver.com'"
+  else
+    raise "RubyGems 2.0 or newer is required to protect against public gem pushes."
+  end
+
+  spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
+  spec.bindir        = "exe"
+  spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
+  spec.require_paths = ["lib"]
+
+  spec.add_development_dependency "bundler", "~> 1.12"
+  spec.add_development_dependency "rake", "~> 10.0"
+  spec.add_development_dependency "minitest", "~> 5.0"
+
+  spec.add_runtime_dependency "commander", ["= 4.4.0"]
 end

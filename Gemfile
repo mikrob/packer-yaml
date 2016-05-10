@@ -1,4 +1,4 @@
-source 'http://rubygems.org'
+source 'https://rubygems.org'
 
-gem 'test-unit'
-gem 'commander'
+# Specify your gem's dependencies in packer-yaml.gemspec
+gemspec
