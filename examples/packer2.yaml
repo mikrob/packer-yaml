@@ -2,6 +2,7 @@ variables:
   aws_access_key: "AWS_ACCESS_KEY"
   aws_secret_key: "AWS_SECRET_KEY"
   consul_url: "https://releases.hashicorp.com/consul/0.6.3/consul_0.6.3_linux_amd64.zip"
+  :include: my_yaml_vars
 builders:
   - type: "amazon-ebs"
     access_key: "{{user `aws_access_key`}}"
@@ -9,7 +10,7 @@ builders:
   - type: "googlecompute"
     account_file: gce.json
     project_id: mikrob
-# - type: "docker"
+  - :include: my_yaml_builder
 provisioners:
   - type: shell
     inline:
@@ -20,3 +21,5 @@ provisioners:
       - sudo chown -R deploy /home/deploy/.ssh
       - sudo mkdir -p /root/.ssh/
       - sudo apt-get -y install ssh
+  - :include: my_yaml_provisionner
+  - :include: my_yaml_provisionner2

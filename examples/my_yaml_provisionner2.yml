@@ -1,0 +1,6 @@
+- type: shell
+  inline:
+    - "hostname > /opt/hostname"
+- type: shell
+  inline:
+    - "echo 'foo' > /opt/foo"

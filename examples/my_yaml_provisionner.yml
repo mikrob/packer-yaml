@@ -1,0 +1,6 @@
+- type: shell
+  inline:
+    - "#!/bin/bash"
+    - "echo '{{user `consul_url` }}' > /opt/consul_url"
+    - touch /opt/consul_url
+    - curl http://google.fr
