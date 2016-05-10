@@ -1,5 +1,5 @@
 require 'test_helper'
-
+require 'pp'
 class Packer::YamlTest < Minitest::Test
   CONFIG_PATH = File.expand_path("../../../examples/", __FILE__)
 
@@ -27,5 +27,20 @@ class Packer::YamlTest < Minitest::Test
     parsed_json_generated = JSON.parse(json_generated)
     json_real = JSON.parse(File.read("#{CONFIG_PATH}/packer1.json"))
     assert_equal json_real, parsed_json_generated
+  end
+
+  # def test_output_json
+  #   packer_yaml = Packer::Yaml.new("example1", "#{CONFIG_PATH}/packer1.yaml")
+  #   packer_yaml.output_json
+  # end
+
+  def test_load_with_include
+    yaml = Packer::Yaml.new("packer2", "#{CONFIG_PATH}/packer2.yaml")
+    json_generated = yaml.to_json
+    json_to_compare = File.read("#{CONFIG_PATH}/packer2.json")
+
+    assert_equal json_generated, json_to_compare
+    assert_equal yaml.to_hash, JSON.parse(json_to_compare)
+
   end
 end
