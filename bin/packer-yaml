@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require "packer/yaml"
+require "packer/yaml/cli"
 require 'rubygems'
 
 #Packer::Yaml.new("pipo", "pipo.yml")
