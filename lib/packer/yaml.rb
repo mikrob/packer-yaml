@@ -59,6 +59,15 @@ module Packer
       JSON.pretty_generate(@yaml)
     end
 
+    def valid_json?
+      begin
+        JSON.parse(to_json)
+        return true
+      rescue JSON::ParserError => e
+        return false
+      end
+    end
+
     def output_json
       $stdout.write(to_json)
     end
@@ -75,6 +84,15 @@ module Packer
       end
       return nil
     end
+
+    def run_packer(file)
+
+    end
+
+    def run_packer_validate(file)
+
+    end
+
   end
 
 end
