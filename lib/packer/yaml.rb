@@ -51,6 +51,7 @@ module Packer
         end
       rescue
         puts "Your file is not a yaml valid file"
+        yaml = File.read(file_path)
       end
       yaml
     end
@@ -60,21 +61,28 @@ module Packer
     end
 
     def to_json
-      JSON.pretty_generate(@yaml)
+      begin
+        JSON.pretty_generate(@yaml) if @yaml
+      rescue
+        @yaml
+      end
     end
 
     def is_json_valid?
-      Packer::Yaml.valid_json?(to_json)
+      result, error = Packer::Yaml.valid_json?(to_json)
+      puts "Error during json validation : "
+      p error
+      result
     end
 
     def self.valid_json?(json)
       begin
         JSON.parse(json)
-        return true
+        return [true, nil]
       rescue JSON::ParserError => e
-        return false
-      rescue Psych::SyntaxError
-        return false
+        return [false, e]
+      rescue Psych::SyntaxError => e
+        return [false, e]
       end
     end
 

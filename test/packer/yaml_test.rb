@@ -40,7 +40,9 @@ class Packer::YamlTest < Minitest::Test
   end
 
   def test_json_validator
-    assert_equal false, Packer::Yaml.valid_json?(File.read("#{CONFIG_PATH}/invalid_json.json"))
+    result, error =  Packer::Yaml.valid_json?(File.read("#{CONFIG_PATH}/invalid_json.json"))
+    assert_equal false, result
+    assert_kind_of(JSON::ParserError, error)
   end
 
 end
