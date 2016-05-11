@@ -1,41 +1,157 @@
 # Packer::Yaml
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/packer/yaml`. To experiment with that code, run `bin/console` for an interactive prompt.
+This gem is a command line tool to allow you to manage your packer config with YAML instead of JSON.
+Indeed JSON format is not useful for theses kind of config type :
+- you cannot have include so if you have some variation of your config you have to duplicate JSON config.
+- packer doesn't ignore JSON comments, so you cannot comment your code
+- JSON is a very strict format which is boring with this such as comma at end of line
 
-TODO: Delete this and the text above, and describe your gem
 
-## Installation
+# How to use it
 
-Add this line to your application's Gemfile:
+First, you can take the same syntax than in packer but in YAML format.
 
-```ruby
-gem 'packer-yaml'
+## Example :
+
+
+Main file :
+```yaml
+variables:
+  aws_access_key: "AWS_ACCESS_KEY"
+  aws_secret_key: "AWS_SECRET_KEY"
+  consul_url: "https://releases.hashicorp.com/consul/0.6.3/consul_0.6.3_linux_amd64.zip"
+  :include: my_yaml_vars
+builders:
+  - type: "amazon-ebs"
+    access_key: "{{user `aws_access_key`}}"
+    secret_key: "{{user `aws_secret_key`}}"
+  - type: "googlecompute"
+    account_file: gce.json
+    project_id: mikrob
+  - :include: my_yaml_builder
+provisioners:
+  - type: shell
+    inline:
+      - "#!/bin/bash"
+      - sudo useradd -m deploy
+      - sudo mkdir -p /home/deploy/.ssh/
+      - sudo chown -R deploy /home/deploy
+      - sudo chown -R deploy /home/deploy/.ssh
+      - sudo mkdir -p /root/.ssh/
+      - sudo apt-get -y install ssh
+  - :include: my_yaml_provisionner
+  - :include: my_yaml_provisionner2
 ```
 
-And then execute:
+my_yaml_vars.yml :
 
-    $ bundle
+```yaml
+customer_var: customer_var_value
+google_url: google.fr
+gmail_url: google.fr/gmail
+```
 
-Or install it yourself as:
+my_yaml_builder.yml :
 
-    $ gem install packer-yaml
-
-## Usage
-
-TODO: Write usage instructions here
-
-## Development
-
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
-
-## Contributing
-
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/packer-yaml. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+```yaml
+type: "docker"
+image: "ubuntu:14.04"
+commit: true
+```
 
 
-## License
+my_yaml_provisionner.yml :
 
-The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+
+```yaml
+- type: shell
+  inline:
+    - "#!/bin/bash"
+    - "echo '{{user `consul_url` }}' > /opt/consul_url"
+    - touch /opt/consul_url
+    - curl http://google.fr
+```
+
+my_yaml_provisionner2.yml :
+
+```yaml
+- type: shell
+  inline:
+    - "hostname > /opt/hostname"
+- type: shell
+  inline:
+    - "echo 'foo' > /opt/foo"
+```
+
+
+You can run packer_yaml make_json ./examples/packer2.yml
+
+The following json will be generated.
+
+
+
+```json
+{
+  "variables": {
+    "aws_access_key": "AWS_ACCESS_KEY",
+    "aws_secret_key": "AWS_SECRET_KEY",
+    "consul_url": "https://releases.hashicorp.com/consul/0.6.3/consul_0.6.3_linux_amd64.zip",
+    "customer_var": "customer_var_value",
+    "google_url": "google.fr",
+    "gmail_url": "google.fr/gmail"
+  },
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "access_key": "{{user `aws_access_key`}}",
+      "secret_key": "{{user `aws_secret_key`}}"
+    },
+    {
+      "type": "googlecompute",
+      "account_file": "gce.json",
+      "project_id": "mikrob"
+    },
+    {
+      "type": "docker",
+      "image": "ubuntu:14.04",
+      "commit": true
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "#!/bin/bash",
+        "sudo useradd -m deploy",
+        "sudo mkdir -p /home/deploy/.ssh/",
+        "sudo chown -R deploy /home/deploy",
+        "sudo chown -R deploy /home/deploy/.ssh",
+        "sudo mkdir -p /root/.ssh/",
+        "sudo apt-get -y install ssh"
+      ]
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "#!/bin/bash",
+        "echo '{{user `consul_url` }}' > /opt/consul_url",
+        "touch /opt/consul_url",
+        "curl http://google.fr"
+      ]
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "hostname > /opt/hostname"
+      ]
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "echo 'foo' > /opt/foo"
+      ]
+    }
+  ]
+}
+```
 
