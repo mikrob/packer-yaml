@@ -8,7 +8,7 @@ class Packer::YamlTest < Minitest::Test
   end
 
   def test_load_yaml
-    yaml = Packer::Yaml.read("#{CONFIG_PATH}/packer1.yaml")
+    yaml = Packer::Yaml.read("#{CONFIG_PATH}/packer1.yml")
     assert_equal "googlecompute", yaml["builders"][1]["type"]
     assert_equal "amazon-ebs", yaml["builders"][0]["type"]
     assert_equal "#!/bin/bash", yaml["provisioners"].first["inline"].first
@@ -16,13 +16,13 @@ class Packer::YamlTest < Minitest::Test
   end
 
   def test_yaml_and_json_are_equal
-    yaml = Packer::Yaml.read("#{CONFIG_PATH}/packer1.yaml")
+    yaml = Packer::Yaml.read("#{CONFIG_PATH}/packer1.yml")
     json = JSON.parse(File.read("#{CONFIG_PATH}/packer1.json"))
     assert_equal yaml, json
   end
 
   def test_to_json
-    packer_yaml = Packer::Yaml.new("example1", "#{CONFIG_PATH}/packer1.yaml")
+    packer_yaml = Packer::Yaml.new("example1", "#{CONFIG_PATH}/packer1.yml")
     json_generated = packer_yaml.to_json
     parsed_json_generated = JSON.parse(json_generated)
     json_real = JSON.parse(File.read("#{CONFIG_PATH}/packer1.json"))
@@ -30,7 +30,7 @@ class Packer::YamlTest < Minitest::Test
   end
 
   def test_load_with_include
-    yaml = Packer::Yaml.new("packer2", "#{CONFIG_PATH}/packer2.yaml")
+    yaml = Packer::Yaml.new("packer2", "#{CONFIG_PATH}/packer2.yml")
     json_generated = yaml.to_json
     json_to_compare = File.read("#{CONFIG_PATH}/packer2.json")
 
