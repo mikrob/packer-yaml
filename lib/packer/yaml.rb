@@ -12,41 +12,45 @@ module Packer
     end
 
     def self.read file_path
-      yaml = YAML.load_file(file_path)
-      yaml.each do |type,content|
-        if type == "variables"
-          include_var = nil
-          content.each do |k,v|
-            if k == :include
-              v = "#{v}.yml" unless v.end_with?(".yml")
-              include_var = YAML.load_file(File.join(File.dirname(file_path), v))
-            end
-          end
-          content.delete(:include)
-          content.merge!(include_var) if include_var
-        else
-          include_content = nil
-          replacements = {}
-          content.each_with_index do |line, index|
-            line.each do |k,v|
+      begin
+        yaml = YAML.load_file(file_path)
+        yaml.each do |type,content|
+          if type == "variables"
+            include_var = nil
+            content.each do |k,v|
               if k == :include
                 v = "#{v}.yml" unless v.end_with?(".yml")
-                include_content = YAML.load_file(File.join(File.dirname(file_path), v))
-                replacements[index] = include_content
+                include_var = YAML.load_file(File.join(File.dirname(file_path), v))
               end
             end
-          end
-          replacements.each do |idx, value|
-            if value.is_a? Array
-              content.delete_at(idx)
-              value.each_with_index do |val, idx_val|
-                content.insert(idx + idx_val, val)
+            content.delete(:include)
+            content.merge!(include_var) if include_var
+          else
+            include_content = nil
+            replacements = {}
+            content.each_with_index do |line, index|
+              line.each do |k,v|
+                if k == :include
+                  v = "#{v}.yml" unless v.end_with?(".yml")
+                  include_content = YAML.load_file(File.join(File.dirname(file_path), v))
+                  replacements[index] = include_content
+                end
               end
-            else
-              content[idx] = value
+            end
+            replacements.each do |idx, value|
+              if value.is_a? Array
+                content.delete_at(idx)
+                value.each_with_index do |val, idx_val|
+                  content.insert(idx + idx_val, val)
+                end
+              else
+                content[idx] = value
+              end
             end
           end
         end
+      rescue
+        puts "Your file is not a yaml valid file"
       end
       yaml
     end
@@ -59,11 +63,17 @@ module Packer
       JSON.pretty_generate(@yaml)
     end
 
-    def valid_json?
+    def is_json_valid?
+      Packer::Yaml.valid_json?(to_json)
+    end
+
+    def self.valid_json?(json)
       begin
-        JSON.parse(to_json)
+        JSON.parse(json)
         return true
       rescue JSON::ParserError => e
+        return false
+      rescue Psych::SyntaxError
         return false
       end
     end

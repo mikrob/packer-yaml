@@ -27,7 +27,7 @@ module Packer
       file_name = File.basename(file, ".*" )
       if File.exist?(file)
         packer_yaml = Packer::Yaml.new(file_name, file)
-        if packer_yaml.valid_json?
+        if packer_yaml.is_valid_json?
           puts "Generated JSON is valid, your YAML is good!"
         else
           puts "Generated JSON is not valid"

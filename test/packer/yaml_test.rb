@@ -29,11 +29,6 @@ class Packer::YamlTest < Minitest::Test
     assert_equal json_real, parsed_json_generated
   end
 
-  # def test_output_json
-  #   packer_yaml = Packer::Yaml.new("example1", "#{CONFIG_PATH}/packer1.yaml")
-  #   packer_yaml.output_json
-  # end
-
   def test_load_with_include
     yaml = Packer::Yaml.new("packer2", "#{CONFIG_PATH}/packer2.yaml")
     json_generated = yaml.to_json
@@ -43,4 +38,9 @@ class Packer::YamlTest < Minitest::Test
     assert_equal yaml.to_hash, JSON.parse(json_to_compare)
 
   end
+
+  def test_json_validator
+    assert_equal false, Packer::Yaml.valid_json?(File.read("#{CONFIG_PATH}/invalid_json.json"))
+  end
+
 end
