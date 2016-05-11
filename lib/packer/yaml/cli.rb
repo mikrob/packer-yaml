@@ -25,6 +25,8 @@ module Packer
     method_option :file, :type => :string
     def validate(file)
       Packer::Yaml.validate(file)
+      runner = Packer::Runner.new
+      runner.run_packer_validate(file)
     end
 
   end

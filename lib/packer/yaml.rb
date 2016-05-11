@@ -105,6 +105,15 @@ module Packer
     def output_json
       $stdout.write(to_json)
     end
+
+    def write_json
+      require 'securerandom'
+      random_string = SecureRandom.hex
+      final_path = "/tmp/#{@name}_#{random_string}.json"
+      File.open(final_path, 'w') {|io| io.write(to_json)}
+      final_path
+    end
+
   end
 
   class Runner
@@ -125,12 +134,23 @@ module Packer
 
     def run_packer(file)
       cmd = which("packer")
-
-      %x[#{cmd}  ]
+      file_name = File.basename(file, ".*" )
+      packer_yaml = Packer::Yaml.new file_name, file
+      if packer_yaml.is_json_valid?
+        %x[#{cmd}  #{file}]
+      else
+        puts "Cannot run packer because invalid json generated, check your yaml file"
+      end
     end
 
     def run_packer_validate(file)
-
+      cmd = which("packer")
+      file_name = File.basename(file, ".*" )
+      packer_yaml = Packer::Yaml.new file_name, file
+      if packer_yaml.is_json_valid?
+        json_path = packer_yaml.write_json
+        %x[#{cmd} validate json_path]
+      end
     end
 
   end

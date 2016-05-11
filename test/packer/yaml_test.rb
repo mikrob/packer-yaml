@@ -45,4 +45,9 @@ class Packer::YamlTest < Minitest::Test
     assert_kind_of(JSON::ParserError, error)
   end
 
+  def test_packer_runner_which
+    runner = Packer::Runner.new
+    refute_nil runner.check_packer_installed
+  end
+
 end
