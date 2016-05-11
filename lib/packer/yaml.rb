@@ -70,8 +70,10 @@ module Packer
 
     def is_json_valid?
       result, error = Packer::Yaml.valid_json?(to_json)
-      puts "Error during json validation : "
-      p error
+      if error
+        puts "Error during json validation : "
+        p error
+      end
       result
     end
 
@@ -83,6 +85,20 @@ module Packer
         return [false, e]
       rescue Psych::SyntaxError => e
         return [false, e]
+      end
+    end
+
+    def self.validate file
+      if File.exist?(file)
+        file_name = File.basename(file, ".*" )
+        packer_yaml = Packer::Yaml.new(file_name, file)
+        if packer_yaml.is_json_valid?
+          puts "Generated JSON is valid, your YAML is good!"
+        else
+          puts "Generated JSON is not valid"
+        end
+      else
+        puts "Given file doesn't exist"
       end
     end
 
@@ -103,8 +119,14 @@ module Packer
       return nil
     end
 
-    def run_packer(file)
+    def check_packer_installed
+      which("packer")
+    end
 
+    def run_packer(file)
+      cmd = which("packer")
+
+      %x[#{cmd}  ]
     end
 
     def run_packer_validate(file)

@@ -24,17 +24,7 @@ module Packer
     EOF
     method_option :file, :type => :string
     def validate(file)
-      file_name = File.basename(file, ".*" )
-      if File.exist?(file)
-        packer_yaml = Packer::Yaml.new(file_name, file)
-        if packer_yaml.is_json_valid?
-          puts "Generated JSON is valid, your YAML is good!"
-        else
-          puts "Generated JSON is not valid"
-        end
-      else
-        puts "Given file doesn't exist"
-      end
+      Packer::Yaml.validate(file)
     end
 
   end
