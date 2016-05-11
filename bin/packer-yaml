@@ -1,9 +1,10 @@
 #!/usr/bin/env ruby
+  
+$:.unshift(File.join(File.dirname(__FILE__), "..", "lib"))
 
+require 'rubygems'
 require "packer/yaml"
 require "packer/yaml/cli"
-require 'rubygems'
-
+  
 #Packer::Yaml.new("pipo", "pipo.yml")
 Packer::Cli.start(ARGV)
-
